@@ -18,7 +18,7 @@
     </div>
 
     <el-table
-      v-loading="listLoading"
+      v-loading="listLoading" 
       :key="tableKey"
       :data="list"
       border
@@ -64,6 +64,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
         <template slot-scope="scope">
+          <!-- 使用 statusFilter 过滤器 -->
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
         </template>
       </el-table-column>
@@ -86,8 +87,10 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <!-- 下拉选取控件 -->
         <el-form-item :label="$t('table.type')" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
+            <!-- 列表渲染：使用 v-for 指令绑定 calendarTypeOptions 数组进行渲染 -->
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
           </el-select>
         </el-form-item>
@@ -148,10 +151,18 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, {})
 
 export default {
+  // name：
+  // 允许组件模板递归地调用自身。注意，组件在全局用 Vue.component() 注册时，全局 ID 自动作为组件的 name。
+  // 指定 name 选项的另一个好处是便于调试。有名字的组件有更友好的警告信息。
+  // 另外，当在有 vue-devtools，未命名组件将显示成 <AnonymousComponent>，这很没有语义。
+  // 通过提供 name 选项，可以获得更有语义信息的组件树。
   name: 'ComplexTable',
+
+  // directives：包含 Vue 实例可用指令的哈希表。
   directives: {
     waves
   },
+  // filters：包含 Vue 实例可用过滤器的哈希表。
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -165,25 +176,31 @@ export default {
       return calendarTypeKeyValue[type]
     }
   },
+  // data：Vue 实例的数据对象。
+  // Vue 将会递归将 data 的属性转换为 getter/setter，从而让 data 的属性能够响应数据变化。
+  // 对象必须是纯粹的对象 (含有零个或多个的 key/value 对)：浏览器 API 创建的原生对象，原型上的属性会被忽略。
+  // 大概来说，data 应该只能是数据 - 不推荐观察拥有状态行为的对象。
   data() {
     return {
       tableKey: 0,
       list: null,
       total: null,
       listLoading: true,
+      // list查询条件
       listQuery: {
-        page: 1,
-        limit: 20,
+        page: 1,    // 分页
+        limit: 20,  // 每页数量
         importance: undefined,
         title: undefined,
         type: undefined,
-        sort: '+id'
+        sort: '+id' // 排序
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
+      // 临时数据
       temp: {
         id: undefined,
         importance: 1,
@@ -193,6 +210,7 @@ export default {
         type: '',
         status: 'published'
       },
+      // modal
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -209,19 +227,20 @@ export default {
       downloadLoading: false
     }
   },
+  // vue创建时期就去获取table list
   created() {
     this.getList()
   },
   methods: {
     getList() {
-      this.listLoading = true
+      this.listLoading = true   // 开始加载
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
-        this.total = response.data.total
+        this.total = response.data.total  // 数据项总数，不是页面总数
 
         // Just to simulate the time of the request
         setTimeout(() => {
-          this.listLoading = false
+          this.listLoading = false // 停止加载 
         }, 1.5 * 1000)
       })
     },
@@ -229,10 +248,12 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
+    // 每页大小改变
     handleSizeChange(val) {
       this.listQuery.limit = val
       this.getList()
     },
+    // 页数改变
     handleCurrentChange(val) {
       this.listQuery.page = val
       this.getList()
@@ -244,6 +265,7 @@ export default {
       })
       row.status = status
     },
+    // 重置临时数据 temp
     resetTemp() {
       this.temp = {
         id: undefined,
@@ -255,14 +277,21 @@ export default {
         type: ''
       }
     },
+    // 创建数据处理函数
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      // vm.$nextTick( [callback] )
+      // 将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
+      // 它跟全局方法 Vue.nextTick 一样，不同的是回调的 this 自动绑定到调用它的实例上。
       this.$nextTick(() => {
+        // vm.$refs
+        // 一个对象，持有注册过 ref 特性的所有 DOM 元素和组件实例。
         this.$refs['dataForm'].clearValidate()
       })
     },
+    // 创建数据
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
@@ -281,6 +310,7 @@ export default {
         }
       })
     },
+    // 更新数据处理函数
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
@@ -290,11 +320,13 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
+    // 更新数据
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          // 更新文章api
           updateArticle(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
@@ -314,6 +346,7 @@ export default {
         }
       })
     },
+    // 删除数据处理函数
     handleDelete(row) {
       this.$notify({
         title: '成功',

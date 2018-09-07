@@ -56,6 +56,9 @@ export default {
   },
   methods: {
     handleSetLineChartData(type) {
+      // vm.$emit( eventName, […args] )
+      // 触发当前实例上的事件。附加参数都会传给监听器回调。
+      // $emit可以向父级组件触发一个事件
       this.$emit('handleSetLineChartData', type)
     }
   }

@@ -91,6 +91,7 @@ export default {
     }
   },
   methods: {
+    // 接收子组件的事件并处理
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     }
