@@ -1,6 +1,11 @@
 <template>
   <div class="login-container">
 
+    <!-- 指令：v-bind -->
+    <!-- 缩写：':' -->
+    <!-- 用法：动态地绑定一个或多个特性，或一个组件 prop 到表达式。 -->
+    <!-- :model="loginForm"：绑定model到loginForm -->
+    <!-- :rules="loginRules"：绑定rules到loginRules -->
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
@@ -37,6 +42,10 @@
         </span>
       </el-form-item>
 
+      <!-- 指令：v-on -->
+      <!-- 缩写：`@` -->
+      <!-- 用法：绑定事件监听器。事件类型由参数指定。 -->
+      <!-- @click.native.prevent="handleLogin"：触发登录处理函数 -->
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
 
       <div class="tips">
@@ -48,6 +57,7 @@
         <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
       </div>
 
+      <!-- @click="showDialog=true"：点击后设置showDialog为true -->
       <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
     </el-form>
 
@@ -113,6 +123,7 @@ export default {
         this.passwordType = 'password'
       }
     },
+    // 登录处理函数
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {

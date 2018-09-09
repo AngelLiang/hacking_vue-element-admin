@@ -18,7 +18,7 @@
     </div>
 
     <el-table
-      v-loading="listLoading" 
+      v-loading="listLoading"
       :key="tableKey"
       :data="list"
       border
@@ -188,8 +188,8 @@ export default {
       listLoading: true,
       // list查询条件
       listQuery: {
-        page: 1,    // 分页
-        limit: 20,  // 每页数量
+        page: 1, // 分页
+        limit: 20, // 每页数量
         importance: undefined,
         title: undefined,
         type: undefined,
@@ -200,7 +200,7 @@ export default {
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
-      // 临时数据
+      // 临时数据，用于保存modal中的数据并发送
       temp: {
         id: undefined,
         importance: 1,
@@ -233,14 +233,14 @@ export default {
   },
   methods: {
     getList() {
-      this.listLoading = true   // 开始加载
+      this.listLoading = true // 开始加载
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
-        this.total = response.data.total  // 数据项总数，不是页面总数
+        this.total = response.data.total // 数据项总数，不是页面总数
 
         // Just to simulate the time of the request
         setTimeout(() => {
-          this.listLoading = false // 停止加载 
+          this.listLoading = false // 停止加载
         }, 1.5 * 1000)
       })
     },
