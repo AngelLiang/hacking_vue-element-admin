@@ -17,6 +17,7 @@
       <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">{{ $t('table.reviewer') }}</el-checkbox>
     </div>
 
+    <!-- el-table文档：http://element.eleme.io/#/zh-CN/component/table#table-attributes -->
     <el-table
       v-loading="listLoading"
       :key="tableKey"
@@ -82,12 +83,16 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+      <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
 
+    <!-- Dialog 弹出一个对话框，适合需要定制性更大的场景。 -->
+    <!-- el-dialog文档：http://element.eleme.io/#/zh-CN/component/dialog#attributes -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <!-- el-form文档：http://element.eleme.io/#/zh-CN/component/form#form-attributes -->
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <!-- 下拉选取控件 -->
+        <!-- prop	对应列内容的字段名，也可以使用 property 属性	string	—	— -->
         <el-form-item :label="$t('table.type')" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <!-- 列表渲染：使用 v-for 指令绑定 calendarTypeOptions 数组进行渲染 -->
