@@ -238,6 +238,8 @@ export function getTime(type) {
   }
 }
 
+// 设置一个最小的延时，每次敲击后延时同步输入框的值到Model中。
+// 延迟调用
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
