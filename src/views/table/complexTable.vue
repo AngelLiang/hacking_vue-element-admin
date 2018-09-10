@@ -82,6 +82,7 @@
       </el-table-column>
     </el-table>
 
+    <!-- el-pagination文档：http://element.eleme.io/#/zh-CN/component/pagination#attributes -->
     <div class="pagination-container">
       <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
