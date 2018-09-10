@@ -84,7 +84,15 @@
 
     <!-- el-pagination文档：http://element.eleme.io/#/zh-CN/component/pagination#attributes -->
     <div class="pagination-container">
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+      <el-pagination
+        :current-page="listQuery.page"
+        :page-sizes="[10,20,30,50]"
+        :page-size="listQuery.limit"
+        :total="total"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"/>
     </div>
 
     <!-- Dialog 弹出一个对话框，适合需要定制性更大的场景。 -->
