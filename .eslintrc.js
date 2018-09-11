@@ -159,19 +159,22 @@ module.exports = {
       }
     }],
     'padded-blocks': [2, 'never'],
+
     // 引号类型 `` "" ''
-    'quotes': [2, 'single', {
-      'avoidEscape': true,
-      'allowTemplateLiterals': true
-    }],
+    // 'quotes': [2, 'single', {
+    //   'avoidEscape': true,
+    //   'allowTemplateLiterals': true
+    // }],
     // 'quotes': [2, 'double', {
     //   'avoidEscape': true,
     //   'allowTemplateLiterals': true
     // }],
-    
+    'quotes': [0],  // 关闭
+
     // 'semi': [2, 'never'],
     // 关闭语句强制分号结尾
     "semi": [0],
+    
     'semi-spacing': [2, {
       'before': false,
       'after': true
