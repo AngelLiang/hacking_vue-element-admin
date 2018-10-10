@@ -11,7 +11,9 @@ const getters = {
   status: state => state.user.status,
   roles: state => state.user.roles,
   setting: state => state.user.setting,
+  // 权限路由
   permission_routers: state => state.permission.routers,
+  // 动态添加路由
   addRouters: state => state.permission.addRouters,
   errorLogs: state => state.errorLog.logs
 }
