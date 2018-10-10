@@ -1,9 +1,12 @@
 const getters = {
+  // app
   sidebar: state => state.app.sidebar,
   language: state => state.app.language,
   device: state => state.app.device,
+  // tags view
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
+  // user
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
@@ -15,6 +18,7 @@ const getters = {
   permission_routers: state => state.permission.routers,
   // 动态添加路由
   addRouters: state => state.permission.addRouters,
+  // error log
   errorLogs: state => state.errorLog.logs
 }
 export default getters
