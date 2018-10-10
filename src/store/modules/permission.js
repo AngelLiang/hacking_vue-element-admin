@@ -7,6 +7,7 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
  */
 function hasPermission(roles, route) {
   if (route.meta && route.meta.roles) {
+    // 判断roles里是否匹配route.meta.roles某个字段
     return roles.some(role => route.meta.roles.indexOf(role) >= 0)
   } else {
     return true
@@ -34,6 +35,7 @@ function filterAsyncRouter(asyncRouterMap, roles) {
 const permission = {
   state: {
     routers: constantRouterMap,
+    // 路由表
     addRouters: []
   },
   mutations: {
@@ -47,6 +49,7 @@ const permission = {
       return new Promise(resolve => {
         const { roles } = data
         let accessedRouters
+        // 如果 roles 有 admin 字段
         if (roles.indexOf('admin') >= 0) {
           accessedRouters = asyncRouterMap
         } else {
