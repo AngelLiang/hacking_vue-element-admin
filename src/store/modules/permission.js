@@ -41,10 +41,12 @@ const permission = {
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
+      // concat() 方法用于连接两个或多个数组。
       state.routers = constantRouterMap.concat(routers)
     }
-  },
+  }, // mutations
   actions: {
+    // 生成路由
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
         const { roles } = data
@@ -59,7 +61,7 @@ const permission = {
         resolve()
       })
     }
-  }
+  } // actions
 }
 
 export default permission

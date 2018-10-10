@@ -144,6 +144,7 @@ export const asyncRouterMap = [
     ]
   },
 
+  // add router from modules
   /** When your routing table is too long, you can split it into small modules**/
   componentsRouter,
   chartsRouter,
