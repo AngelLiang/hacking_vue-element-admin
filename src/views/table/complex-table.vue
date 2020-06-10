@@ -1,22 +1,29 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <!-- 标题输入框 -->
       <el-input v-model="listQuery.title" placeholder="Title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <!-- importance -->
       <el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
+      <!-- type -->
       <el-select v-model="listQuery.type" placeholder="Type" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select>
+      <!-- 排序 -->
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
+      <!-- 搜索按钮 -->
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
+      <!-- 添加 -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
       </el-button>
+      <!-- 导出 -->
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
@@ -72,6 +79,7 @@
           <span v-else>0</span>
         </template>
       </el-table-column>
+      <!-- 状态 -->
       <el-table-column label="Status" class-name="status-col" width="100">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">
@@ -79,6 +87,7 @@
           </el-tag>
         </template>
       </el-table-column>
+      <!-- 操作 -->
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
@@ -97,29 +106,37 @@
       </el-table-column>
     </el-table>
 
+    <!-- 分页 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
+    <!-- 编辑新增框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <!-- 下拉框选择 -->
         <el-form-item label="Type" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
+        <!-- 时间 -->
         <el-form-item label="Date" prop="timestamp">
           <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
         </el-form-item>
+        <!-- 标题 -->
         <el-form-item label="Title" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
+        <!-- 状态 -->
         <el-form-item label="Status">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
             <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
+        <!-- radio -->
         <el-form-item label="Imp">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
         </el-form-item>
+        <!-- 文本域 -->
         <el-form-item label="Remark">
           <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
         </el-form-item>
@@ -210,6 +227,7 @@ export default {
         type: '',
         status: 'published'
       },
+      // dialog
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
@@ -217,6 +235,7 @@ export default {
         create: 'Create'
       },
       dialogPvVisible: false,
+
       pvData: [],
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
